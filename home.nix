@@ -77,6 +77,13 @@
     };
   };
 
+  #Git config
+  programs.git = {
+    enable = true;
+    userName = "filippo";
+    userEmail = "filippotobias@gmail.com";
+  };
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
