@@ -19,5 +19,7 @@ environment.systemPackages = with pkgs; [
     godot_4
     libreoffice
     git
+    aseprite
+    discord
   ];
 }
