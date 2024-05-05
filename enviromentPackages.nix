@@ -21,5 +21,9 @@ environment.systemPackages = with pkgs; [
     git
     aseprite
     discord
+    lutris
+    bottles
+    steam-run
+    appimage-run
   ];
 }

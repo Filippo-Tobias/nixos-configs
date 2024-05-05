@@ -84,15 +84,20 @@
   
   #Enable Ibus input method, lets you write emojis too
   #i18n.inputMethod.enabled = "ibus";
-  virtualisation.waydroid.enable = true;
-
+  virtualisation.waydroid.enable = false;
+  
+  #enabling ddc brightness control
+  boot.kernelModules = ["i2c-dev"];
+  services.udev.extraRules = ''
+        KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
+  '';
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.nixuser = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "dialout"]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "dialout" "i2c"]; # user groups, dialout is for some pico programming and i2c is for ddc brightness control.
     packages = with pkgs; [
       firefox
       tree
