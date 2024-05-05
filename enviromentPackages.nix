@@ -22,7 +22,6 @@ environment.systemPackages = with pkgs; [
     aseprite
     discord
     lutris
-    bottles
     steam-run
     appimage-run
     ddcutil
