@@ -87,7 +87,9 @@
   virtualisation.waydroid.enable = false;
   
   #enabling ddc brightness control
-  boot.kernelModules = ["i2c-dev"];
+  hardware.i2c.enable = true;
+  boot.kernelModules = ["i2c-dev" "ddcci_backlight"];
+  boot.extraModulePackages = [config.boot.kernelPackages.ddcci-driver];
   services.udev.extraRules = ''
         KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
   '';

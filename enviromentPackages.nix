@@ -25,5 +25,7 @@ environment.systemPackages = with pkgs; [
     bottles
     steam-run
     appimage-run
+    ddcutil
+    gnomeExtensions.brightness-control-using-ddcutil
   ];
 }
