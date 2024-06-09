@@ -5,8 +5,10 @@
 
 {
 environment.systemPackages = with pkgs; [
+    gnomeExtensions.gsconnect
     vim
     wget
+    refind
     gnome.gnome-tweaks
     xclip
     clipnotify
