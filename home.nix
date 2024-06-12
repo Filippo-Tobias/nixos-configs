@@ -74,7 +74,8 @@
       enable = true;
       shellAliases = {
         lsa = "ls -a";
-    };
+        nixswitch = "sudo nixos-rebuild switch --flake /home/nixuser/.dotfiles/.";
+      };
   };
 
   #Git config
