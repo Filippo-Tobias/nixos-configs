@@ -14,7 +14,7 @@
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
   home.stateVersion = "23.11"; # Please read the comment before changing.
-
+  
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
@@ -67,17 +67,29 @@
   #  /etc/profiles/per-user/nixuser/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    HISTCONTROL="erasedups";
   };
 
   programs.bash = {
       enable = true;
+      sessionVariables = {
+       XDG_CONFIG_HOME="$HOME/.config"; 
+      };
       shellAliases = {
         lsa = "ls -a";
         nixswitch = "sudo nixos-rebuild switch --flake /home/nixuser/.dotfiles/.";
+        lua-language-server = "lua-lsp"; #this is for a neovim plugin that calls "lua-language-server"
       };
   };
-
+  
+  #install vscode
+  programs.vscode = {
+    enable = true;
+    extensions = with pkgs.vscode-extensions; [
+      vadimcn.vscode-lldb
+    ];
+  };
+  
   #Git config
   programs.git = {
     enable = true;

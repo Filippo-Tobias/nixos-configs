@@ -12,7 +12,6 @@ environment.systemPackages = with pkgs; [
     gnome.gnome-tweaks
     xclip
     clipnotify
-    vscode
     thonny
     killall
     prismlauncher
@@ -28,5 +27,11 @@ environment.systemPackages = with pkgs; [
     appimage-run
     ddcutil
     gnomeExtensions.brightness-control-using-ddcutil
+    neovim
+    alacritty
+    luajitPackages.lua-lsp
+    nil
+    ripgrep
+    (nerdfonts.override {fonts = ["FiraCode"];}) 
   ];
 }

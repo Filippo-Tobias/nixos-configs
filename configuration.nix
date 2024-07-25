@@ -27,6 +27,7 @@
 
   #Allow UNFREE
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfreePredicate = (pkg: true);
 
   #Enable flatpak
   services.flatpak.enable = true;
@@ -112,8 +113,7 @@
   enable = true;
   remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
   dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-};
-
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -123,8 +123,6 @@
     enableSSHSupport = true;
   };
 
-  #enable dynamically linked executables
-  programs.nix-ld.enable = true;
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
