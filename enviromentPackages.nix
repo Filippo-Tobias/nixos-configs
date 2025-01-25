@@ -6,10 +6,12 @@
 {
 environment.systemPackages = with pkgs; [
     gnomeExtensions.gsconnect
+    kitty
+    wofi
     vim
     wget
     refind
-    gnome.gnome-tweaks
+    gnome-tweaks
     xclip
     clipnotify
     thonny
@@ -28,7 +30,6 @@ environment.systemPackages = with pkgs; [
     ddcutil
     gnomeExtensions.brightness-control-using-ddcutil
     neovim
-    alacritty
     luajitPackages.lua-lsp
     nil
     ripgrep

@@ -5,6 +5,7 @@
     nixpkgs.url = "nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    #xremap-flake.url = "github:xremap/nix-flake";
   };
 
   outputs = {self, nixpkgs, home-manager, ...}:
@@ -19,6 +20,13 @@
           modules = [
             ./configuration.nix
             ./enviromentPackages.nix
+	    home-manager.nixosModules.home-manager
+	    #xremap-flake.nixosModules.default
+	    {
+	      home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.nixuser = import ./home.nix;
+	    }
           ];
         };
       };

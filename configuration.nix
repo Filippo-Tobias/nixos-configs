@@ -58,14 +58,15 @@
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
-  services.xserver = {
-    enable = true;
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
-  };
+
+  #services.xserver = {
+  #  enable = true;
+  #  displayManager.gdm.enable = true;
+  #  desktopManager.gnome.enable = true;
+  #};
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
   # Enable sound.  
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -108,12 +109,45 @@
     ];
   };
 
+  programs.hyprland.enable = true;
+
   #Install steam
   programs.steam = {
   enable = true;
   remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
   dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
+
+  services.interception-tools = {
+    enable = true;
+    plugins = [ pkgs.interception-tools-plugins.dual-function-keys ];
+    udevmonConfig = ''
+    - JOB: "${pkgs.interception-tools}/bin/intercept -g '/dev/input/event0' | ${pkgs.interception-tools-plugins.dual-function-keys}/bin/dual-function-keys -c /home/nixuser/nixconfig/dual-function-keys.yaml | ${pkgs.interception-tools}/bin/uinput -d '/dev/input/event0'"
+    DEVICE:
+    MATCH:
+      EV_KEY: [KEY_CAPSLOCK, KEY_RIGHTSHIFT, KEY_LEFTSHIFT]
+    '';
+};
+
+#    NAME: "Razer Razer BlackWidow V3 Tenkeyless Keyboard"
+#  services.xremap = {
+    /* NOTE: since this sample configuration does not have any DE, xremap needs to be started manually by systemctl --user start xremap */
+#    serviceMode = "user";
+#    userName = "nixuser";
+#    withHypr = true;
+#    config = ''
+#      devices:
+#        - Razer Razer BlackWidow V3 Tenkeyless Keyboard
+#      modmap:
+#        - name: Caps
+#          CapsLock:
+#            held: Super
+#            alone: Esc
+#            alone_timeout: 500
+#
+#    '';
+#
+#  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

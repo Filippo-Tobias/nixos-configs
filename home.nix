@@ -70,6 +70,8 @@
     HISTCONTROL="erasedups";
   };
 
+  wayland.windowManager.hyprland.systemd.variables = ["--all"];
+
   programs.bash = {
       enable = true;
       sessionVariables = {
@@ -95,6 +97,32 @@
     enable = true;
     userName = "filippo";
     userEmail = "filippotobias@gmail.com";
+  };
+
+  dconf.settings = {
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+      };
+    };
+
+    gtk = {
+      enable = true;
+
+      theme = {
+        name = "Adwaita-dark";
+        package = pkgs.gnome-themes-extra;
+      };
+
+      font = {
+        name = "Sans";
+	size = 11;
+      };
+    };
+
+  qt = {
+    enable = true;
+    platformTheme.name = "adwaita";
+    style.name = "adwaita-dark";
   };
 
   # Let Home Manager install and manage itself.
