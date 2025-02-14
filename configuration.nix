@@ -29,6 +29,25 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = (pkg: true);
 
+  boot.supportedFilesystems = [ "ntfs" ];
+
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+  };
+
+ # services.ollama = {
+ #   enable = true;
+ #   acceleration = "rocm";
+ #   environmentVariables = {
+ #     OLLAMA_DEBUG="1";
+ #     OLLAMA_GPU_OVERHEAD = "20GB";
+ #     #HCC_AMDGPU_TARGET = "gfx1031"; # used to be necessary, but doesn't seem to anymore
+ #   };
+ #   rocmOverrideGfx = "10.3.1";
+ # };
+
+
   #Enable flatpak
   services.flatpak.enable = true;
 
@@ -68,7 +87,7 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
   # Enable sound.  
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -122,7 +141,7 @@
     enable = true;
     plugins = [ pkgs.interception-tools-plugins.dual-function-keys ];
     udevmonConfig = ''
-    - JOB: "${pkgs.interception-tools}/bin/intercept -g '/dev/input/event0' | ${pkgs.interception-tools-plugins.dual-function-keys}/bin/dual-function-keys -c /home/nixuser/nixconfig/dual-function-keys.yaml | ${pkgs.interception-tools}/bin/uinput -d '/dev/input/event0'"
+    - JOB: "${pkgs.interception-tools}/bin/intercept -g '/dev/input/by-id/usb-Razer_Razer_BlackWidow_V3_Tenkeyless-event-kbd' | ${pkgs.interception-tools-plugins.dual-function-keys}/bin/dual-function-keys -c /home/nixuser/nixconfig/dual-function-keys.yaml | ${pkgs.interception-tools}/bin/uinput -d '/dev/input/by-id/usb-Razer_Razer_BlackWidow_V3_Tenkeyless-event-kbd'"
     DEVICE:
     MATCH:
       EV_KEY: [KEY_CAPSLOCK, KEY_RIGHTSHIFT, KEY_LEFTSHIFT]

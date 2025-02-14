@@ -5,7 +5,18 @@
 
 {
 environment.systemPackages = with pkgs; [
+    distrobox
     gnomeExtensions.gsconnect
+    lmstudio
+    gnome-disk-utility
+    nautilus
+    kdePackages.qtsvg #required for icons for doplhin
+    kdePackages.dolphin
+    deluge
+    xdg-desktop-portal-hyprland
+    hyprlock
+    linux-wallpaperengine
+    mpvpaper
     kitty
     wofi
     vim
@@ -33,6 +44,10 @@ environment.systemPackages = with pkgs; [
     luajitPackages.lua-lsp
     nil
     ripgrep
-    (nerdfonts.override {fonts = ["FiraCode"];}) 
+    #nerd-fonts.fira-code 
+  ];
+
+nixpkgs.config.permittedInsecurePackages = [
+    "freeimage-unstable-2021-11-01"
   ];
 }

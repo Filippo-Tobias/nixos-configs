@@ -79,7 +79,7 @@
       };
       shellAliases = {
         lsa = "ls -a";
-        nixswitch = "sudo nixos-rebuild switch --flake /home/nixuser/.dotfiles/.";
+        nixswitch = "sudo nixos-rebuild switch --flake ~/nixconfig";
         lua-language-server = "lua-lsp"; #this is for a neovim plugin that calls "lua-language-server"
       };
   };
