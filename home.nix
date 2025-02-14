@@ -97,6 +97,9 @@
     enable = true;
     userName = "filippo";
     userEmail = "filippotobias@gmail.com";
+    extraConfig = {
+    	core.editor = "nvim";
+    };
   };
 
   dconf.settings = {
