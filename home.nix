@@ -71,19 +71,6 @@
   };
 
   wayland.windowManager.hyprland.systemd.variables = ["--all"];
-
-  programs.bash = {
-      enable = true;
-      sessionVariables = {
-       XDG_CONFIG_HOME="$HOME/.config"; 
-      };
-      shellAliases = {
-        lsa = "ls -a";
-        nixswitch = "sudo nixos-rebuild switch --flake ~/nixconfig";
-        lua-language-server = "lua-lsp"; #this is for a neovim plugin that calls "lua-language-server"
-      };
-  };
-  
   #install vscode
   programs.vscode = {
     enable = true;
@@ -103,29 +90,44 @@
   };
 
   dconf.settings = {
-      "org/gnome/desktop/interface" = {
-        color-scheme = "prefer-dark";
-      };
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+    };
+  };
+
+  gtk = {
+    enable = true;
+
+    theme = {
+    name = "Adwaita-dark";
+      package = pkgs.gnome-themes-extra;
     };
 
-    gtk = {
-      enable = true;
-
-      theme = {
-        name = "Adwaita-dark";
-        package = pkgs.gnome-themes-extra;
-      };
-
-      font = {
-        name = "Sans";
-	size = 11;
-      };
+    font = {
+      name = "Sans";
+      size = 11;
     };
+  };
 
   qt = {
     enable = true;
     platformTheme.name = "adwaita";
     style.name = "adwaita-dark";
+  };
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    name = "WhiteSur-cursors";
+    package = pkgs.whitesur-cursors;
+    size = 24;
+  };
+
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+    "application/zip" = "org.kde.dolphin.desktop";
+    };
   };
 
   # Let Home Manager install and manage itself.

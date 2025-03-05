@@ -23,6 +23,7 @@
   #Environment Variables
   environment.sessionVariables = rec {
     NIXPKGS_ALLOW_UNFREE="1";
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1.5";
   };
 
   #Allow UNFREE
@@ -51,8 +52,31 @@
   #Enable flatpak
   services.flatpak.enable = true;
 
-  #Enable Bluetooth
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings.General = {
+      experimental = true; # show battery
+
+      # https://www.reddit.com/r/NixOS/comments/1ch5d2p/comment/lkbabax/
+      # for pairing bluetooth controller
+      Privacy = "device";
+      JustWorksRepairing = "always";
+      Class = "0x000100";
+      FastConnectable = true;
+    };
+  };
+  services.blueman.enable = true;
+
+  hardware.xpadneo.enable = true; # Enable the xpadneo driver for Xbox One wireless controllers
+
+  boot = {
+    extraModulePackages = with config.boot.kernelPackages; [ xpadneo ddcci-driver];
+    extraModprobeConfig = ''
+      options bluetooth disable_ertm=Y
+    '';
+    # connect xbox controller
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/London";
@@ -110,7 +134,8 @@
   #enabling ddc brightness control
   hardware.i2c.enable = true;
   boot.kernelModules = ["i2c-dev" "ddcci_backlight"];
-  boot.extraModulePackages = [config.boot.kernelPackages.ddcci-driver];
+  #boot.extraModulePackages = [config.boot.kernelPackages.ddcci-driver];
+  #This is included in the bluetooth config, as there can only be one extraModulePackages
   services.udev.extraRules = ''
         KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
   '';
@@ -126,8 +151,18 @@
       tree
       xclip
     ];
+    shell= pkgs.zsh;
   };
 
+  programs.zsh = {
+    enable = true;
+    shellAliases = {
+      la = "ls -a";
+      ll = "ls -l";
+      lla = "ls -la";
+      nixswitch = "sudo nixos-rebuild switch --flake ~/nixconfig";
+    };
+  }; 
   programs.hyprland.enable = true;
 
   #Install steam

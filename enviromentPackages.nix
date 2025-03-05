@@ -1,15 +1,18 @@
 { config, lib, pkgs, ... }:
 
-# List packages installed in system profile. To search, run:
-# $ nix search wget
-
 {
+imports = [
+     ./extraEnviromentPackages.nix
+];
+
+#For packages in nixpkgs
 environment.systemPackages = with pkgs; [
+    wl-clipboard
     distrobox
+    sway-contrib.grimshot
+    slurp
     gnomeExtensions.gsconnect
-    lmstudio
     gnome-disk-utility
-    nautilus
     kdePackages.qtsvg #required for icons for doplhin
     kdePackages.dolphin
     deluge
