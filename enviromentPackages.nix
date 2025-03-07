@@ -8,6 +8,7 @@ imports = [
 #For packages in nixpkgs
 environment.systemPackages = with pkgs; [
     wl-clipboard
+    mpv
     distrobox
     sway-contrib.grimshot
     slurp
