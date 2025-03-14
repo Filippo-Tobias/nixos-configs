@@ -7,8 +7,12 @@ imports = [
 
 #For packages in nixpkgs
 environment.systemPackages = with pkgs; [
+    wine64
     wl-clipboard
+    r2modman
     mpv
+    gamescope
+    gamemode
     distrobox
     sway-contrib.grimshot
     slurp
