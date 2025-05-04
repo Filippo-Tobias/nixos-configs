@@ -5,23 +5,21 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
-   
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.configurationLimit = 5;
+  boot.kernelParams = ["preempt=full"];
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
-  networking.hostName = "nixpc"; # Define your hostname.
+  security.polkit.enable = true;
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   #Environment Variables
   environment.sessionVariables = rec {
+    KITTY_CONFIG_DIRECTORY=./kitty;
     NIXPKGS_ALLOW_UNFREE="1";
     QT_AUTO_SCREEN_SCALE_FACTOR = "1.5";
   };
@@ -48,6 +46,9 @@
  #   rocmOverrideGfx = "10.3.1";
  # };
 
+  #Automounting with nautilus
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
 
   #Enable flatpak
   services.flatpak.enable = true;
@@ -101,12 +102,12 @@
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
-
-  #services.xserver = {
-  #  enable = true;
-  #  displayManager.gdm.enable = true;
-  #  desktopManager.gnome.enable = true;
-  #};
+  programs.hyprland.enable = true; # enable Hyprland
+  # services.xserver = {
+  #   enable = true;
+  #   displayManager.gdm.enable = true;
+  #   desktopManager.gnome.enable = true;
+  # };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -121,9 +122,14 @@
     #jack.enable = true;
     extraConfig.pipewire = {
       "clock-rate-config" = {
+        "default.clock.quantum" = 2048;
         "default.clock.min-quantum" = 1024;
         "default.clock.max-quantum" = 8192;
       };
+      #"context.properties" = {
+      #  "default.clock.rate" = 95999;
+      #  "default.clock.allowed-rates" = [ "95999" ];
+      #};
     }; 
   };
   
@@ -154,34 +160,12 @@
     shell= pkgs.zsh;
   };
 
-  programs.zsh = {
-    enable = true;
-    shellAliases = {
-      la = "ls -a";
-      ll = "ls -l";
-      lla = "ls -la";
-      nixswitch = "sudo nixos-rebuild switch --flake ~/nixconfig";
-    };
-  }; 
-  programs.hyprland.enable = true;
-
   #Install steam
   programs.steam = {
   enable = true;
   remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
   dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
-
-  services.interception-tools = {
-    enable = true;
-    plugins = [ pkgs.interception-tools-plugins.dual-function-keys ];
-    udevmonConfig = ''
-    - JOB: "${pkgs.interception-tools}/bin/intercept -g '/dev/input/by-id/usb-Razer_Razer_BlackWidow_V3_Tenkeyless-event-kbd' | ${pkgs.interception-tools-plugins.dual-function-keys}/bin/dual-function-keys -c /home/nixuser/nixconfig/dual-function-keys.yaml | ${pkgs.interception-tools}/bin/uinput -d '/dev/input/by-id/usb-Razer_Razer_BlackWidow_V3_Tenkeyless-event-kbd'"
-    DEVICE:
-    MATCH:
-      EV_KEY: [KEY_CAPSLOCK, KEY_RIGHTSHIFT, KEY_LEFTSHIFT]
-    '';
-};
 
 #    NAME: "Razer Razer BlackWidow V3 Tenkeyless Keyboard"
 #  services.xremap = {

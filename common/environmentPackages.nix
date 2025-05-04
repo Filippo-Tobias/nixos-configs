@@ -2,7 +2,7 @@
 
 {
 imports = [
-     ./extraEnviromentPackages.nix
+     ./extraEnvironmentPackages.nix
 ];
 
 #For packages in nixpkgs
