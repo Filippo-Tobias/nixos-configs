@@ -7,6 +7,7 @@ imports = [
 
 #For packages in nixpkgs
 environment.systemPackages = with pkgs; [
+    lua-language-server
     wine64
     wl-clipboard
     r2modman
@@ -42,7 +43,9 @@ environment.systemPackages = with pkgs; [
     libreoffice
     git
     aseprite
-    discord
+    (discord.override {
+      withVencord = true;
+    })
     lutris
     steam-run
     appimage-run
