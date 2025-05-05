@@ -7,6 +7,12 @@ imports = [
 
 #For packages in nixpkgs
 environment.systemPackages = with pkgs; [
+    unzip
+    unrar
+    rar
+    kdePackages.ark
+    kdePackages.kservice
+    kdePackages.kio-admin
     lua-language-server
     wine64
     wl-clipboard

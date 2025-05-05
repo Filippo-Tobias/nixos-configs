@@ -31,7 +31,7 @@
     enable = true;
     plugins = [ pkgs.interception-tools-plugins.dual-function-keys ];
     udevmonConfig = ''
-    - JOB: "${pkgs.interception-tools}/bin/intercept -g '/dev/input/by-id/usb-Razer_Razer_BlackWidow_V3_Tenkeyless-event-kbd' | ${pkgs.interception-tools-plugins.dual-function-keys}/bin/dual-function-keys -c /home/nixuser/nixconfig/dual-function-keys.yaml | ${pkgs.interception-tools}/bin/uinput -d '/dev/input/by-id/usb-Razer_Razer_BlackWidow_V3_Tenkeyless-event-kbd'"
+    - JOB: "${pkgs.interception-tools}/bin/intercept -g '/dev/input/by-id/usb-Razer_Razer_BlackWidow_V3_Tenkeyless-event-kbd' | ${pkgs.interception-tools-plugins.dual-function-keys}/bin/dual-function-keys -c /home/nixuser/nixconfig/common/dual-function-keys.yaml | ${pkgs.interception-tools}/bin/uinput -d '/dev/input/by-id/usb-Razer_Razer_BlackWidow_V3_Tenkeyless-event-kbd'"
     DEVICE:
     MATCH:
       EV_KEY: [KEY_CAPSLOCK, KEY_RIGHTSHIFT, KEY_LEFTSHIFT]
