@@ -5,9 +5,10 @@
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
   };
 
-  outputs = inputs @ {self, nixpkgs, home-manager, ...}:
+  outputs = inputs @ {self, nixpkgs, chaotic, home-manager, ...}:
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
@@ -22,6 +23,7 @@
             ./common/configuration.nix
             ./common/environmentPackages.nix
 	          home-manager.nixosModules.home-manager
+            chaotic.nixosModules.default
 	          {
               home-manager.useGlobalPkgs = true;
                     home-manager.useUserPackages = true;
@@ -38,6 +40,7 @@
 	          ./common/configuration.nix
             ./common/environmentPackages.nix
 	          home-manager.nixosModules.home-manager
+            chaotic.nixosModules.default
 	          {
               home-manager.useGlobalPkgs = true;
                     home-manager.useUserPackages = true;
