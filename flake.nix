@@ -6,6 +6,16 @@
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    hyprland.url = "github:hyprwm/Hyprland";
+    xremap-flake = {
+      url = "github:xremap/nix-flake";
+      inputs = {
+        xremap = {
+          url = "github:RANKSHANK/xremap?ref=hyprland-bindings-update";
+       };
+      };
+    };
+
   };
 
   outputs = inputs @ {self, nixpkgs, chaotic, home-manager, ...}:
@@ -13,21 +23,25 @@
       lib = nixpkgs.lib;
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
-    in rec {
+    in {
       nixosConfigurations = {
         nixpc = lib.nixosSystem {
           inherit system;
-	        specialArgs = { inherit inputs; };
+	        specialArgs = { inherit inputs; inherit system; };
           modules = [
             ./hosts/pc/configuration.nix
             ./common/configuration.nix
             ./common/environmentPackages.nix
+            inputs.xremap-flake.nixosModules.default
 	          home-manager.nixosModules.home-manager
             chaotic.nixosModules.default
 	          {
               home-manager.useGlobalPkgs = true;
                     home-manager.useUserPackages = true;
-                    home-manager.users.nixuser = import ./common/home.nix;
+                    home-manager.users.nixuser = lib.mkMerge [
+                      (import ./common/home.nix)
+                      (import ./hosts/pc/home.nix)
+                    ];
               home-manager.backupFileExtension = "backupfile";
             }
           ];
@@ -44,7 +58,10 @@
 	          {
               home-manager.useGlobalPkgs = true;
                     home-manager.useUserPackages = true;
-                    home-manager.users.nixuser = import ./common/home.nix;
+                    home-manager.users.nixuser = lib.mkMerge [
+                      (import ./common/home.nix)
+                      (import ./hosts/laptop/home.nix)
+                    ];
               home-manager.backupFileExtension = "backupfile";
             }
           ];
@@ -52,13 +69,13 @@
 
       };
 
-      homeConfigurations = {
-        nixuser = home-manager.lib.homeManagerConfiguration {
-          specialArgs = { inherit inputs; };
-          inherit pkgs;
-          modules = [./common/home.nix];
-        };
-      };
+      #homeConfigurations = {
+      #  nixuser = home-manager.lib.homeManagerConfiguration {
+      #    specialArgs = { inherit inputs; };
+      #    inherit pkgs;
+      #    modules = [./common/home.nix];
+      #  };
+      #};
     };
   
 

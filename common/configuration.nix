@@ -30,6 +30,9 @@
 
   boot.supportedFilesystems = [ "ntfs" ];
 
+  programs.nix-ld.enable = true;
+  programs.noisetorch.enable = true;
+  programs.nix-ld.libraries = pkgs.steam-run.args.multiPkgs pkgs;
   virtualisation.podman = {
     enable = true;
     dockerCompat = true;
@@ -103,6 +106,7 @@
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
   programs.hyprland.enable = true; # enable Hyprland
+  programs.hyprland.withUWSM = true;
   # services.xserver = {
   #   enable = true;
   #   displayManager.gdm.enable = true;
@@ -149,9 +153,10 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.groups.keyd = {};
   users.users.nixuser = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "dialout" "i2c"]; # user groups, dialout is for some pico programming and i2c is for ddc brightness control.
+    extraGroups = [ "wheel" "dialout" "i2c" "render" "seat" "input" "keyd"]; # user groups, dialout is for some pico programming and i2c is for ddc brightness control.
     packages = with pkgs; [
       firefox
       tree
@@ -160,32 +165,32 @@
     shell= pkgs.zsh;
   };
 
+  hardware.uinput.enable = true;
+  users.groups.uinput.members = ["nixuser"];
+  users.groups.input.members = ["nixuser"];
+
   #Install steam
   programs.steam = {
-  enable = true;
-  remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-  dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
-
-#    NAME: "Razer Razer BlackWidow V3 Tenkeyless Keyboard"
-#  services.xremap = {
-    /* NOTE: since this sample configuration does not have any DE, xremap needs to be started manually by systemctl --user start xremap */
-#    serviceMode = "user";
-#    userName = "nixuser";
-#    withHypr = true;
-#    config = ''
-#      devices:
-#        - Razer Razer BlackWidow V3 Tenkeyless Keyboard
-#      modmap:
-#        - name: Caps
-#          CapsLock:
-#            held: Super
-#            alone: Esc
-#            alone_timeout: 500
-#
-#    '';
-#
-#  };
+  nixpkgs.config.packageOverrides = pkgs: {
+    steam = pkgs.steam.override {
+      extraPkgs = pkgs: with pkgs; [
+        xorg.libXcursor
+        xorg.libXi
+        xorg.libXinerama
+        xorg.libXScrnSaver
+        libpng
+        libpulseaudio
+        libvorbis
+        stdenv.cc.cc.lib
+        libkrb5
+        keyutils
+      ];
+    };
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

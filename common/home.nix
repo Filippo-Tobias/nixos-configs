@@ -71,13 +71,14 @@
   };
 
   wayland.windowManager.hyprland.systemd.variables = ["--all"];
+  
   #install vscode
-  programs.vscode = {
-    enable = true;
-    extensions = with pkgs.vscode-extensions; [
-      vadimcn.vscode-lldb
-    ];
-  };
+#  programs.vscode = {
+#    enable = true;
+#    extensions = with pkgs.vscode-extensions; [
+#      vadimcn.vscode-lldb
+#    ];
+#  };
   
   #Git config
   programs.git = {
