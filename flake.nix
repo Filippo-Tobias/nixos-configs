@@ -11,7 +11,7 @@
       url = "github:xremap/nix-flake";
       inputs = {
         xremap = {
-          url = "github:RANKSHANK/xremap?ref=hyprland-bindings-update";
+          url = "./xremap/";
        };
       };
     };
