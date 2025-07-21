@@ -11,6 +11,9 @@
   boot.loader.systemd-boot.configurationLimit = 5;
   boot.kernelParams = ["preempt=full"];
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 10;
+  };
 
   security.polkit.enable = true;
   # Pick only one of the below networking options.
@@ -19,7 +22,6 @@
 
   #Environment Variables
   environment.sessionVariables = rec {
-    KITTY_CONFIG_DIRECTORY=./kitty;
     NIXPKGS_ALLOW_UNFREE="1";
     QT_AUTO_SCREEN_SCALE_FACTOR = "1.5";
   };
@@ -29,7 +31,16 @@
   nixpkgs.config.allowUnfreePredicate = (pkg: true);
 
   boot.supportedFilesystems = [ "ntfs" ];
+  programs.adb.enable = true;
 
+  xdg.portal = {
+    enable = true;
+    extraPortals = [
+      pkgs.xdg-desktop-portal-hyprland
+      pkgs.xdg-desktop-portal-gtk # Often a good fallback for GTK apps
+    ];
+    xdgOpenUsePortal = true;
+  };
   programs.nix-ld.enable = true;
   programs.noisetorch.enable = true;
   programs.nix-ld.libraries = pkgs.steam-run.args.multiPkgs pkgs;
@@ -37,7 +48,8 @@
     enable = true;
     dockerCompat = true;
   };
-
+  programs.thunar.enable = true;
+  services.tumbler.enable = true; # Thumbnail support for images
  # services.ollama = {
  #   enable = true;
  #   acceleration = "rocm";
@@ -53,6 +65,8 @@
   services.gvfs.enable = true;
   services.udisks2.enable = true;
 
+  #syncthing
+  services.syncthing.enable = true;
   #Enable flatpak
   services.flatpak.enable = true;
 

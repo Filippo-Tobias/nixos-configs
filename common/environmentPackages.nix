@@ -9,7 +9,13 @@ let
 in {
   #For packages in nixpkgs
   environment.systemPackages = with pkgs; [
+      heroic
+      obsidian
+      qimgv
+      obs-studio
       oldPkgs.gamescope
+      kdePackages.kate
+      modrinth-app
       keyd
       xorg.xorgserver
       unzip
@@ -36,13 +42,10 @@ in {
       slurp
       gnomeExtensions.gsconnect
       gnome-disk-utility
-      kdePackages.qtsvg #required for icons for doplhin
-      kdePackages.dolphin
       deluge
       xdg-desktop-portal-hyprland
       hyprlock
       mpvpaper
-      kitty
       wofi
       vim
       wget
@@ -58,9 +61,10 @@ in {
       godot_4
       libreoffice
       git
-      (discord.override {
-        withVencord = true;
-      })
+      # (discord.override {
+      #   withVencord = true;
+      # })
+      discord
       lutris
       steam-run
       appimage-run

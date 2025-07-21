@@ -90,38 +90,29 @@
     };
   };
 
-  dconf.settings = {
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
-    };
-  };
+  # dconf.settings = {
+  #   "org/gnome/desktop/interface" = {
+  #     color-scheme = "prefer-dark";
+  #   };
+  # };
 
   gtk = {
     enable = true;
+    # theme = {
+    # name = "Adwaita-dark";
+    #   package = pkgs.gnome-themes-extra;
+    # };
 
-    theme = {
-    name = "Adwaita-dark";
-      package = pkgs.gnome-themes-extra;
-    };
-
-    font = {
-      name = "Sans";
-      size = 11;
-    };
+    # font = {
+    #   name = "Sans";
+    #   size = 11;
+    # };
   };
 
   qt = {
     enable = true;
-    platformTheme.name = "adwaita";
-    style.name = "adwaita-dark";
-  };
-
-  home.pointerCursor = {
-    gtk.enable = true;
-    x11.enable = true;
-    name = "WhiteSur-cursors";
-    package = pkgs.whitesur-cursors;
-    size = 24;
+    # platformTheme.name = "adwaita";
+    # style.name = "adwaita-dark";
   };
 
   xdg.mimeApps = {

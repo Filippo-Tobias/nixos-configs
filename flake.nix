@@ -7,18 +7,14 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     hyprland.url = "github:hyprwm/Hyprland";
-    xremap-flake = {
-      url = "github:xremap/nix-flake";
-      inputs = {
-        xremap = {
-          url = "./xremap/";
-       };
-      };
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
   };
 
-  outputs = inputs @ {self, nixpkgs, chaotic, home-manager, ...}:
+  outputs = inputs @ {self, nixpkgs, chaotic, home-manager, stylix, ...}:
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
@@ -32,9 +28,9 @@
             ./hosts/pc/configuration.nix
             ./common/configuration.nix
             ./common/environmentPackages.nix
-            inputs.xremap-flake.nixosModules.default
 	          home-manager.nixosModules.home-manager
             chaotic.nixosModules.default
+            stylix.nixosModules.stylix
 	          {
               home-manager.useGlobalPkgs = true;
                     home-manager.useUserPackages = true;
@@ -66,17 +62,6 @@
             }
           ];
         };
-
       };
-
-      #homeConfigurations = {
-      #  nixuser = home-manager.lib.homeManagerConfiguration {
-      #    specialArgs = { inherit inputs; };
-      #    inherit pkgs;
-      #    modules = [./common/home.nix];
-      #  };
-      #};
     };
-  
-
 }

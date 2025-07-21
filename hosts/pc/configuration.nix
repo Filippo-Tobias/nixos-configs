@@ -11,11 +11,15 @@
     ];
    
   hardware.cpu.amd.updateMicrocode = true; 
-  services.logmein-hamachi.enable = true;
 
   networking.hostName = "nixpc"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
+  #Stylix system theming (https://nix-community.github.io/stylix/options/platforms/nixos.html)
+  stylix.enable = true;
+  stylix.polarity = "dark";
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/onedark-dark.yaml";
 
   hardware.opengl = {
     enable = true;
@@ -41,25 +45,6 @@
         EV_KEY: [KEY_CAPSLOCK, KEY_RIGHTSHIFT, KEY_LEFTSHIFT]
     '';
   };
-   services.xremap = {
-     enable = true;
-     serviceMode = "user";
-     userName = "nixuser";
-     withHypr = true;
-     config = {
-       modmap = [
-         {
-           name = "Wuwa remap";
-           application = {
-            #only = ["steam_app_3513350"];
-            only = "firefox";
-           };
-           remap = { "KEY_APOSTROPHE" = "KEY_LEFTSHIFT"; "KEY_SEMICOLON" = "BTN_LEFT";}; 
-         }
-       ]; 
-     };
-   };
-
 
   #State Version
   system.stateVersion = "23.11";

@@ -10,17 +10,16 @@
       ./hardware-configuration.nix
     ];
 
-  networking.hostName = "nixpc"; # Define your hostname.
+  networking.hostName = "nixlaptop"; # Define your hostname.
   # Pick only one of the below networking options.
+
+  #Stylix system theming (https://nix-community.github.io/stylix/options/platforms/nixos.html)
+  stylix.enable = true;
+  stylix.polarity = "dark";
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/onedark-dark.yaml";
 
   programs.zsh = {
     enable = true;
-    shellAliases = {
-      la = "ls -a";
-      ll = "ls -l";
-      lla = "ls -la";
-      nixswitch = "sudo nixos-rebuild switch --flake /home/nixuser/nixconfig#nixlaptop";
-    };
   }; 
   
   services.interception-tools = {
