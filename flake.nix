@@ -51,6 +51,7 @@
             ./common/environmentPackages.nix
 	          home-manager.nixosModules.home-manager
             chaotic.nixosModules.default
+            stylix.nixosModules.stylix
 	          {
               home-manager.useGlobalPkgs = true;
                     home-manager.useUserPackages = true;
