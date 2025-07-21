@@ -14,7 +14,6 @@ in {
       qimgv
       obs-studio
       oldPkgs.gamescope
-      kdePackages.kate
       modrinth-app
       keyd
       xorg.xorgserver
@@ -25,10 +24,6 @@ in {
       unrar
       mangohud
       rar
-      kdePackages.ark
-      kdePackages.kservice
-      kdePackages.kio-admin
-      kdePackages.kio-extras
       p7zip-rar
       p7zip
       lua-language-server

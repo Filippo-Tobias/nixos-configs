@@ -44,7 +44,7 @@
         };
         nixlaptop = lib.nixosSystem {
           inherit system;
-	        specialArgs = { inherit inputs; };
+	        specialArgs = { inherit inputs; inherit system; };
           modules = [
             ./hosts/laptop/configuration.nix
 	          ./common/configuration.nix
