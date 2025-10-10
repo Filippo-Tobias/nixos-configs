@@ -17,7 +17,13 @@ in {
       tmux
       brightnessctl
       pywal
+      docker-compose
+      freerdp
+      ffmpeg
+      deno
       heroic
+      xfce.thunar-archive-plugin
+      file-roller
       obsidian
       qimgv
       obs-studio
@@ -64,10 +70,9 @@ in {
       godot_4
       libreoffice
       git
-      # (discord.override {
-      #   withVencord = true;
-      # })
-      discord
+      (discord.override {
+        withVencord = true;
+      })
       lutris
       steam-run
       appimage-run

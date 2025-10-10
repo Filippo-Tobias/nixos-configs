@@ -14,10 +14,10 @@
     initExtra = ''
       bindkey "^[[1;5C" forward-word
       bindkey "^[[1;5D" backward-word
-      PROMPT="%{%F{green}%}%n@%m%{%F{blue}%}(%D{%H:%M})($SHLVL)%{%F{green}%}:%{%F{blue}%}%~/%{%F{green}%}%(!.#.$)%{%f%} "
+      PROMPT="%{%F{green}%}%n@%m%{%F{blue}%}(%D{%H:%M})($SHLVL)%{%F{red}%}$CONTAINER_ID%{%F{green}%}:%{%F{blue}%}%~/%{%F{green}%}%(!.#.$)%{%f%} "
     '';
     initContent = lib.mkOrder 1500 ''
-      zstyle ':completion:*' ignored-patterns 'flake.lock' '*/flake.lock'
+      zstyle ':completion:*' ignored-patterns 'flake.lock' '*/flake.lock' 'Cargo.lock' '*/Cargo.lock'
       zstyle ':completion:*' single-ignored show
     '';
     syntaxHighlighting.enable = true;
@@ -36,6 +36,22 @@
     "image/gif" = ["qimgv.desktop"];
     "image/webp" = ["qimgv.desktop"];
     "inode/directory" = ["thunar.desktop"];
+  };
+  xdg.desktopEntries.Citron = {
+    name = "Citron";
+    genericName = "Switch Emulator";
+    exec = "steam-run /home/nixuser/AppImages/Citron.AppImage";
+    comment = "Nintendo Switch video game console emulator";
+    type = "Application";
+    icon = "/home/nixuser/AppImages/Icons/org.citron_emu.citron.svg";
+  };
+  xdg.desktopEntries.Hayase = {
+    name = "Hayase";
+    genericName = "Anime Streaming App";
+    exec = "steam-run /home/nixuser/AppImages/Hayase.AppImage";
+    comment = "Anime Streaming/Torrenting App";
+    type = "Application";
+    icon = "/home/nixuser/AppImages/Icons/org.hayase.hayase.webp";
   };
 
   #Stylix user theming (https://nix-community.github.io/stylix/options/platforms/home_manager.html)

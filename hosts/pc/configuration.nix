@@ -11,6 +11,33 @@
     ];
    
   hardware.cpu.amd.updateMicrocode = true; 
+  environment.systemPackages = with pkgs; [
+    openrazer-daemon
+    polychromatic
+  ];
+
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 150;
+  };
+  swapDevices = [];
+
+  boot.resumeDevice = "/dev/disk/by-uuid/ebd8b58a-357e-40cb-9185-1af0131fa36e";
+
+  zramSwap = {
+    enable = true;
+    memoryPercent = 50;
+    priority = 100;
+  };
+
+   systemd.user.services.openrazer = {
+    description = "OpenRazer daemon";
+    serviceConfig.ExecStart = "${pkgs.openrazer-daemon}/bin/openrazer-daemon";
+    wantedBy = ["default.target"];
+  };
+
+  users.extraGroups.openrazer = {
+    members = [ "nixuser" ];
+  };
 
   networking.hostName = "nixpc"; # Define your hostname.
   # Pick only one of the below networking options.

@@ -12,10 +12,6 @@
   boot.kernelParams = ["preempt=full"];
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
 
-  boot.kernel.sysctl = {
-    "vm.swappiness" = 10;
-  };
-
   fonts.packages = with pkgs; [
     font-awesome
     fira-code
@@ -29,10 +25,19 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
+  programs.wireshark = {
+    enable = true;
+    dumpcap.enable = true;
+  };
+
   #Environment Variables
   environment.sessionVariables = rec {
     NIXPKGS_ALLOW_UNFREE="1";
     QT_AUTO_SCREEN_SCALE_FACTOR = "1.5";
+    LD_LIBRARY_PATH = lib.makeLibraryPath [
+      pkgs.libglvnd
+      pkgs.pulseaudio
+    ];
   };
 
   #Allow UNFREE
@@ -53,10 +58,12 @@
   programs.nix-ld.enable = true;
   programs.noisetorch.enable = true;
   programs.nix-ld.libraries = pkgs.steam-run.args.multiPkgs pkgs;
-  virtualisation.podman = {
+
+  virtualisation.docker= {
     enable = true;
-    dockerCompat = true;
   };
+
+  users.extraGroups.docker.members = ["nixuser"];
   programs.thunar.enable = true;
   services.tumbler.enable = true; # Thumbnail support for images
  # services.ollama = {
