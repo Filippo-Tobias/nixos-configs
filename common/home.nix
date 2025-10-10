@@ -87,7 +87,9 @@
     userEmail = "filippotobias@gmail.com";
     extraConfig = {
     	core.editor = "nvim";
+      credential.helper = "store";
     };
+
   };
 
   # dconf.settings = {

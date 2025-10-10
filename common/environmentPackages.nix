@@ -9,6 +9,14 @@ let
 in {
   #For packages in nixpkgs
   environment.systemPackages = with pkgs; [
+      pyright
+      iptables
+      docker-compose
+      freerdp
+      resnap
+      tmux
+      brightnessctl
+      pywal
       heroic
       obsidian
       qimgv

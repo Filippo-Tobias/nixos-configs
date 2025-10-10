@@ -11,7 +11,6 @@
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
   };
 
   outputs = inputs @ {self, nixpkgs, chaotic, home-manager, stylix, ...}:
@@ -44,7 +43,7 @@
         };
         nixlaptop = lib.nixosSystem {
           inherit system;
-	        specialArgs = { inherit inputs; inherit system; };
+	        specialArgs = { inherit inputs; inherit system;};
           modules = [
             ./hosts/laptop/configuration.nix
 	          ./common/configuration.nix

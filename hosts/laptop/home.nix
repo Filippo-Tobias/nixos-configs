@@ -1,6 +1,17 @@
-{ pkgs, lib, ...}:
+{pkgs, lib, ...}:
 
 {
+  imports = [
+  ];
+  services.hypridle = {
+    enable = true;
+    settings = {
+      general = {
+        before_sleep_cmd = "${pkgs.hyprlock}/bin/hyprlock";
+      };
+    };
+  };
+
   programs.zsh = {
     enable = true;
     shellAliases = {
@@ -34,7 +45,7 @@
     "image/jpeg" = ["qimgv.desktop"];
     "image/gif" = ["qimgv.desktop"];
     "image/webp" = ["qimgv.desktop"];
-    "inode/directory" = ["thunar.desktop"];
+    "inode/directory" = ["dolphin.desktop"];
   };
 
   #Stylix user theming (https://nix-community.github.io/stylix/options/platforms/home_manager.html)

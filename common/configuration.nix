@@ -11,9 +11,18 @@
   boot.loader.systemd-boot.configurationLimit = 5;
   boot.kernelParams = ["preempt=full"];
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
+
   boot.kernel.sysctl = {
     "vm.swappiness" = 10;
   };
+
+  fonts.packages = with pkgs; [
+    font-awesome
+    fira-code
+    nerd-fonts._0xproto
+  ];
+
+  programs.kdeconnect.enable = true;
 
   security.polkit.enable = true;
   # Pick only one of the below networking options.
@@ -84,7 +93,6 @@
       FastConnectable = true;
     };
   };
-  services.blueman.enable = true;
 
   hardware.xpadneo.enable = true; # Enable the xpadneo driver for Xbox One wireless controllers
 
@@ -157,7 +165,7 @@
   
   #enabling ddc brightness control
   hardware.i2c.enable = true;
-  boot.kernelModules = ["i2c-dev" "ddcci_backlight"];
+  boot.kernelModules = ["i2c-dev" "ddcci_backlight" "ip_tables" "iptable_nat"];
   #boot.extraModulePackages = [config.boot.kernelPackages.ddcci-driver];
   #This is included in the bluetooth config, as there can only be one extraModulePackages
   services.udev.extraRules = ''
@@ -182,6 +190,7 @@
   hardware.uinput.enable = true;
   users.groups.uinput.members = ["nixuser"];
   users.groups.input.members = ["nixuser"];
+  users.groups.docker.members = ["nixuser"];
 
   #Install steam
   programs.steam = {
