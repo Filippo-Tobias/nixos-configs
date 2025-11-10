@@ -1,8 +1,9 @@
 #Home manager config (https://home-manager-options.extranix.com/)
 
-{ pkgs, lib, ... }:
+{ pkgs, lib, caelestia, ... }:
 
 {
+
   programs.zsh = {
     enable = true;
     shellAliases = {
@@ -14,7 +15,7 @@
     initExtra = ''
       bindkey "^[[1;5C" forward-word
       bindkey "^[[1;5D" backward-word
-      PROMPT="%{%F{green}%}%n@%m%{%F{blue}%}(%D{%H:%M})($SHLVL)%{%F{red}%}$CONTAINER_ID%{%F{green}%}:%{%F{blue}%}%~/%{%F{green}%}%(!.#.$)%{%f%} "
+      PROMPT="%{%F{green}%}%n@%m%{%F{blue}%}(%D{%H:%M})($SHLVL)%{%F{green}%}: [%{%F{red}%}$CONTAINER_ID%{%F{blue}%}%~%{%F{green}%}]%(!.#.$)%{%f%} "
     '';
     initContent = lib.mkOrder 1500 ''
       zstyle ':completion:*' ignored-patterns 'flake.lock' '*/flake.lock' 'Cargo.lock' '*/Cargo.lock'
@@ -24,10 +25,39 @@
 
   };
   programs.zoxide.enable = true;
-  
-  programs.kitty.enable = true;
+  programs.ghostty.enable = true;
+
+  programs.caelestia = {
+    enable = true;
+    systemd = {
+      enable = false;
+      target = "graphical-session.target";
+      environment = [];
+    };
+    settings = {
+      bar.status = {
+        showBattery = false;
+      };
+      paths.wallpaperDir = "~/Pictures/Wallpapers";
+      services = {
+        weatherLocation = "Cardiff";
+      };
+    };
+    cli = {
+      enable = true;
+      settings = {
+        theme.enableGtk = false;
+      };
+    };
+  };
 
   # Mime config (setting default apps, for all types run: cat /etc/profiles/per-user/nixuser/share/mime/packages/freedesktop.org.xml | grep "mime-type type=" | nvim)
+  home.file.".config/xfce4/helpers.rc".text = ''
+    [TerminalEmulator]
+    Command=ghostty
+    Exec=ghostty
+  '';
+  xdg.enable = true;
   xdg.mimeApps.defaultApplications = {
     "video/mp4" = ["mpv.desktop"];
     "video/mkv" = ["mpv.desktop"];
@@ -36,7 +66,13 @@
     "image/gif" = ["qimgv.desktop"];
     "image/webp" = ["qimgv.desktop"];
     "inode/directory" = ["thunar.desktop"];
+    "text/plain" = ["neovim.desktop"];
+    "application/pdf" = ["firefox.desktop"];
   };
+  xdg.mimeApps.associations.removed = {
+    "application/pdf" = "chromium-browser.desktop";
+  };
+  xdg.configFile."mimeapps.list".force = true;
   xdg.desktopEntries.Citron = {
     name = "Citron";
     genericName = "Switch Emulator";
@@ -55,16 +91,28 @@
   };
 
   #Stylix user theming (https://nix-community.github.io/stylix/options/platforms/home_manager.html)
-  stylix.targets.gtk.enable = true;
-  stylix.targets.kitty.enable = true;
-  stylix.targets.gtk.flatpakSupport.enable = true;
-  stylix.iconTheme.enable = true;
-  stylix.iconTheme.package = pkgs.qogir-icon-theme;
-  stylix.iconTheme.dark = "Qogir-Dark";
-  stylix.iconTheme.light = "Qogir-Light";
-  stylix.cursor = {
-    package = pkgs.bibata-cursors;
-    size = 24;
-    name = "Bibata-Modern-Classic";
+  stylix = {
+    targets = {
+      gtk = {
+        enable = true;
+        flatpakSupport.enable = true;
+      };
+      ghostty.enable = true;
+    };
+
+    fonts.sizes.terminal = 13;
+
+    iconTheme = {
+      enable = true;
+      package = pkgs.qogir-icon-theme;
+      dark = "Qogir-Dark";
+      light = "Qogir-Light";
+    };
+
+    cursor = {
+      package = pkgs.bibata-cursors;
+      size = 24;
+      name = "Bibata-Modern-Classic";
+    };
   };
 }

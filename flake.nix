@@ -11,13 +11,16 @@
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    caelestia = {
+      url = "github:caelestia-dots/shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs @ {self, nixpkgs, chaotic, home-manager, stylix, ...}:
+  outputs = inputs @ {self, nixpkgs, chaotic, home-manager, stylix, caelestia, ...}:
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
     in {
       nixosConfigurations = {
         nixpc = lib.nixosSystem {
@@ -32,11 +35,14 @@
             stylix.nixosModules.stylix
 	          {
               home-manager.useGlobalPkgs = true;
-                    home-manager.useUserPackages = true;
-                    home-manager.users.nixuser = lib.mkMerge [
-                      (import ./common/home.nix)
-                      (import ./hosts/pc/home.nix)
-                    ];
+              home-manager.useUserPackages = true;
+              home-manager.users.nixuser = {
+                imports = [
+                  (import ./common/home.nix)
+                  (import ./hosts/pc/home.nix)
+                  caelestia.homeManagerModules.default
+                ];
+              };
               home-manager.backupFileExtension = "backupfile";
             }
           ];

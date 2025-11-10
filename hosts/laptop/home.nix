@@ -23,7 +23,7 @@
     initExtra = ''
       bindkey "^[[1;5C" forward-word
       bindkey "^[[1;5D" backward-word
-      PROMPT="%{%F{green}%}%n@%m%{%F{blue}%}(%D{%H:%M})($SHLVL)%{%F{green}%}:%{%F{blue}%}%~/%{%F{green}%}%(!.#.$)%{%f%} "
+      PROMPT="%{%F{green}%}%n@%m%{%F{blue}%}(%D{%H:%M})($SHLVL)%{%F{green}%}:%{%F{blue}%}%~%{%F{green}%}%(!.#.$)%{%f%} "
     '';
     initContent = lib.mkOrder 1500 ''
       zstyle ':completion:*' ignored-patterns 'flake.lock' '*/flake.lock'

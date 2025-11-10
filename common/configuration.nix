@@ -30,6 +30,8 @@
     dumpcap.enable = true;
   };
 
+  services.logmein-hamachi.enable = true;
+
   #Environment Variables
   environment.sessionVariables = rec {
     NIXPKGS_ALLOW_UNFREE="1";
@@ -58,6 +60,11 @@
   programs.nix-ld.enable = true;
   programs.noisetorch.enable = true;
   programs.nix-ld.libraries = pkgs.steam-run.args.multiPkgs pkgs;
+
+  xdg.terminal-exec.enable = true;
+  xdg.terminal-exec.settings = {
+    default = ["ghostty.desktop"];
+  };
 
   virtualisation.docker= {
     enable = true;
@@ -187,7 +194,6 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "dialout" "i2c" "render" "seat" "input" "keyd"]; # user groups, dialout is for some pico programming and i2c is for ddc brightness control.
     packages = with pkgs; [
-      firefox
       tree
       xclip
     ];

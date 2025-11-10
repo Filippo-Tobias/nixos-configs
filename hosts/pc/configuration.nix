@@ -21,6 +21,17 @@
   };
   swapDevices = [];
 
+  xdg.mime.defaultApplications = {
+    "video/mp4" = ["mpv.desktop"];
+    "video/mkv" = ["mpv.desktop"];
+    "image/png" = ["qimgv.desktop"];
+    "image/jpeg" = ["qimgv.desktop"];
+    "image/gif" = ["qimgv.desktop"];
+    "image/webp" = ["qimgv.desktop"];
+    "inode/directory" = ["thunar.desktop"];
+    "text/plain" = ["kate.desktop"];
+  };
+
   boot.resumeDevice = "/dev/disk/by-uuid/ebd8b58a-357e-40cb-9185-1af0131fa36e";
 
   zramSwap = {

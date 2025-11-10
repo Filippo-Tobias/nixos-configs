@@ -10,6 +10,8 @@ in {
   #For packages in nixpkgs
   environment.systemPackages = with pkgs; [
       pyright
+      firefox
+      kdePackages.kate
       iptables
       docker-compose
       freerdp
@@ -21,14 +23,12 @@ in {
       freerdp
       ffmpeg
       deno
-      heroic
       xfce.thunar-archive-plugin
       file-roller
       obsidian
       qimgv
       obs-studio
       oldPkgs.gamescope
-      modrinth-app
       keyd
       xorg.xorgserver
       unzip
