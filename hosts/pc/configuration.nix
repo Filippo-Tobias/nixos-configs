@@ -9,6 +9,30 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
+
+  programs.ssh.extraConfig = ''
+    Host eu.nixbuild.net
+    PubkeyAcceptedKeyTypes ssh-ed25519
+    ServerAliveInterval 60
+    IPQoS throughput
+    IdentityFile /home/nixuser/.ssh/id_ed25519
+  '';
+  
+  nix = {
+    distributedBuilds = true;
+    buildMachines = [
+      { hostName = "eu.nixbuild.net";
+        system = "x86_64-linux";
+        maxJobs = 100;
+        supportedFeatures = [ "benchmark" "big-parallel" ];
+      }
+    ];
+  };
+
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu.swtpm.enable = true;
+  };
    
   hardware.cpu.amd.updateMicrocode = true; 
   environment.systemPackages = with pkgs; [
@@ -40,15 +64,12 @@
     priority = 100;
   };
 
-   systemd.user.services.openrazer = {
-    description = "OpenRazer daemon";
-    serviceConfig.ExecStart = "${pkgs.openrazer-daemon}/bin/openrazer-daemon";
-    wantedBy = ["default.target"];
-  };
-
-  users.extraGroups.openrazer = {
+  users.extraGroups.libvirtd = {
     members = [ "nixuser" ];
   };
+
+  hardware.openrazer.enable = true;
+  users.users.nixuser = { extraGroups = [ "openrazer" ]; };
 
   networking.hostName = "nixpc"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -73,15 +94,20 @@
     enable = true;
   };
 
-  services.interception-tools = {
-    enable = true;
-    plugins = [ pkgs.interception-tools-plugins.dual-function-keys ];
-    udevmonConfig = ''
-      - JOB: "${pkgs.interception-tools}/bin/intercept -g '/dev/input/by-id/usb-Razer_Razer_BlackWidow_V3_Tenkeyless-event-kbd' | ${pkgs.interception-tools-plugins.dual-function-keys}/bin/dual-function-keys -c /home/nixuser/nixconfig/common/dual-function-keys.yaml | ${pkgs.interception-tools}/bin/uinput -d '/dev/input/by-id/usb-Razer_Razer_BlackWidow_V3_Tenkeyless-event-kbd'"
+services.interception-tools = {
+  enable = true;
+  plugins = [ pkgs.interception-tools-plugins.dual-function-keys ];
+  udevmonConfig = ''
+    - JOB: "${pkgs.interception-tools}/bin/intercept -g $DEVNODE | ${pkgs.interception-tools-plugins.dual-function-keys}/bin/dual-function-keys -c /home/nixuser/nixconfig/common/dual-function-keys.yaml | ${pkgs.interception-tools}/bin/uinput -d $DEVNODE"
       DEVICE:
-      MATCH:
-        EV_KEY: [KEY_CAPSLOCK, KEY_RIGHTSHIFT, KEY_LEFTSHIFT]
-    '';
+        LINK: /dev/input/by-id/usb-Razer_Razer_BlackWidow_V3_Tenkeyless-event-kbd
+  '';
+};
+  systemd.services.interception-tools = {
+    serviceConfig = {
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
   };
 
   #State Version

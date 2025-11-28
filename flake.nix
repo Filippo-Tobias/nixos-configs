@@ -15,9 +15,11 @@
       url = "github:caelestia-dots/shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    antigravity.url = "github:Filippo-Tobias/antigravity-nix";
+    antigravity.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs @ {self, nixpkgs, chaotic, home-manager, stylix, caelestia, ...}:
+  outputs = inputs @ {self, nixpkgs, chaotic, home-manager, stylix, caelestia, antigravity, ...}:
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
@@ -28,21 +30,20 @@
 	        specialArgs = { inherit inputs; inherit system; };
           modules = [
             ./hosts/pc/configuration.nix
-            ./common/configuration.nix
+	          ./common/configuration.nix
             ./common/environmentPackages.nix
 	          home-manager.nixosModules.home-manager
             chaotic.nixosModules.default
             stylix.nixosModules.stylix
 	          {
               home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.nixuser = {
-                imports = [
-                  (import ./common/home.nix)
-                  (import ./hosts/pc/home.nix)
-                  caelestia.homeManagerModules.default
-                ];
-              };
+                    home-manager.useUserPackages = true;
+                    home-manager.extraSpecialArgs = {inherit inputs; inherit system;};
+                    home-manager.users.nixuser = lib.mkMerge [
+                      (import ./common/home.nix)
+                      (import ./hosts/pc/home.nix)
+                      (caelestia.homeManagerModules.default)
+                    ];
               home-manager.backupFileExtension = "backupfile";
             }
           ];

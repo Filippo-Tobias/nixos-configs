@@ -1,9 +1,8 @@
 #Home manager config (https://home-manager-options.extranix.com/)
 
-{ pkgs, lib, caelestia, ... }:
+{ pkgs, lib, caelestia, inputs, ... }:
 
 {
-
   programs.zsh = {
     enable = true;
     shellAliases = {
@@ -29,25 +28,8 @@
 
   programs.caelestia = {
     enable = true;
-    systemd = {
-      enable = false;
-      target = "graphical-session.target";
-      environment = [];
-    };
-    settings = {
-      bar.status = {
-        showBattery = false;
-      };
-      paths.wallpaperDir = "~/Pictures/Wallpapers";
-      services = {
-        weatherLocation = "Cardiff";
-      };
-    };
     cli = {
       enable = true;
-      settings = {
-        theme.enableGtk = false;
-      };
     };
   };
 
@@ -84,7 +66,7 @@
   xdg.desktopEntries.Hayase = {
     name = "Hayase";
     genericName = "Anime Streaming App";
-    exec = "steam-run /home/nixuser/AppImages/Hayase.AppImage";
+    exec = "appimage-run /home/nixuser/AppImages/Hayase.AppImage";
     comment = "Anime Streaming/Torrenting App";
     type = "Application";
     icon = "/home/nixuser/AppImages/Icons/org.hayase.hayase.webp";

@@ -5,12 +5,34 @@
 { config, lib, pkgs, ... }:
 
 {
+  nixpkgs.overlays = [ (final: prev: {
+    inherit (prev.lixPackageSets.stable)
+      nixpkgs-review
+      nix-eval-jobs
+      nix-fast-build
+      colmena;
+  }) ];
+  programs.ssh.knownHosts = {
+    nixbuild = {
+      hostNames = [ "eu.nixbuild.net" ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPIQCZc54poJ8vqawd8TraNryQeJnvH1eLpIDgbiqymM";
+    };
+  };
+
+  system.activationScripts.gcAfterRebuild.text = ''
+      echo "Running nix-collect-garbage..."
+      /run/current-system/sw/bin/nix-collect-garbage
+  '';
+
+  nix.package = pkgs.lixPackageSets.stable.lix;
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.configurationLimit = 5;
   boot.kernelParams = ["preempt=full"];
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  boot.kernel.sysctl."kernel.sysrq" = 1;
 
   fonts.packages = with pkgs; [
     font-awesome
@@ -19,6 +41,8 @@
   ];
 
   programs.kdeconnect.enable = true;
+  services.locate.enable = true;
+  services.locate.package = pkgs.mlocate;
 
   security.polkit.enable = true;
   # Pick only one of the below networking options.
@@ -59,7 +83,17 @@
   };
   programs.nix-ld.enable = true;
   programs.noisetorch.enable = true;
-  programs.nix-ld.libraries = pkgs.steam-run.args.multiPkgs pkgs;
+  programs.nix-ld.libraries = pkgs.steam-run.args.multiPkgs pkgs ++ (with pkgs; [
+    glib
+    dbus
+    gtk3
+    mesa
+    cairo
+    pango
+    atkmm
+    at-spi2-atk
+
+  ]);
 
   xdg.terminal-exec.enable = true;
   xdg.terminal-exec.settings = {

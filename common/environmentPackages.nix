@@ -1,4 +1,4 @@
-{ config, system, lib, pkgs, ... }:
+{ config, system, lib, pkgs, inputs, ... }:
 let
   oldPkgs = import (fetchTarball {
     url = "https://github.com/NixOS/nixpkgs/archive/882842d2a908700540d206baa79efb922ac1c33d.tar.gz";
@@ -9,6 +9,10 @@ let
 in {
   #For packages in nixpkgs
   environment.systemPackages = with pkgs; [
+      inputs.antigravity.packages.${pkgs.system}.default
+      brave
+      lumafly
+      jq
       pyright
       firefox
       kdePackages.kate
@@ -82,6 +86,7 @@ in {
       luajitPackages.lua-lsp
       nil
       ripgrep
+      virt-manager
       #nerd-fonts.fira-code 
     ];
 

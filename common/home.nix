@@ -119,9 +119,6 @@
 
   xdg.mimeApps = {
     enable = true;
-    defaultApplications = {
-    "application/zip" = "org.kde.dolphin.desktop";
-    };
   };
 
   # Let Home Manager install and manage itself.
